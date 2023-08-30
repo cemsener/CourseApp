@@ -7,15 +7,29 @@ namespace CourseApp.Controllers
     {
         public IActionResult Index()
         {
-            return View();
+            var model = Repository.Applications;
+            return View(model);
         }
         public IActionResult Apply()
         {
             return View();
         }
         [HttpPost]
-        public IActionResult Apply(Candidate model)
+        [ValidateAntiForgeryToken] //CSRF saldırılarına karşı önlem
+        public IActionResult Apply([FromForm] Candidate model) //[] istersen verinin nereden geldiğini gösterebilirsin
         {
+
+            if (Repository.Applications.Any(c=>c.Email.Equals(model.Email)))
+            {
+                ModelState.AddModelError("","There is already an application.");
+            }
+            if (ModelState.IsValid)
+            {
+                Repository.Add(model);
+                return View("Feedback", model);
+            }
+
+            
             return View();
         }
 
