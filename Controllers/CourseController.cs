@@ -19,9 +19,9 @@ namespace CourseApp.Controllers
         public IActionResult Apply([FromForm] Candidate model) //[] istersen verinin nereden geldiğini gösterebilirsin
         {
 
-            if (Repository.Applications.Any(c=>c.Email.Equals(model.Email)))
+            if (Repository.Applications.Any(c => c.Email.Equals(model.Email)))
             {
-                ModelState.AddModelError("","There is already an application.");
+                ModelState.AddModelError("","There is already an application for you.");
             }
             if (ModelState.IsValid)
             {
